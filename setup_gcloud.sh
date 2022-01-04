@@ -12,14 +12,16 @@ pip3 install --no-cache --upgrade pip setuptools
 # Remove any old installation of Google SDK 
 rm -rf ~/google-cloud-sdk/
 curl https://sdk.cloud.google.com | /bin/bash
-echo "export PATH=$PATH:$HOME/.local/bin:$HOME/google-cloud-sdk/bin" >> ~/.bashrc
+# Remove any earlier PATH entry and add a new one 
+sed -i '/google-cloud-sdk\/bin/d' ~/.profile
+echo "export PATH=$PATH:$HOME/.local/bin:$HOME/google-cloud-sdk/bin" >> ~/.profile
 echo "###############################################################################################"
 echo "# First setup gcloud locally and login like follows:                                          #"
 echo "# gcloud auth login                                                                           #"
 echo "# gcloud auth configure-docker                                                                #"
 echo "#                                                                                             #"
 echo "# Save the auth token for use with :                                                          #"
-echo "# nerdctl login -u oauth2accesstoken -p "$(gcloud auth print-access-token)" https://gcr.io    #"
+echo "# nerdctl login -u oauth2accesstoken -p "\$\(gcloud auth print-access-token\)" https://gcr.io    #"
 echo "# then...                                                                                     #"
 echo "# further calls to nerdctl like below would work                                              #"
 echo "# nerdctl push $IMAGE_NAME:$IMAGE_TAG                                                         #"
